@@ -57,14 +57,14 @@ public class CodecResolver
         }
     }
     
-    public static <V extends Message, T extends MessageCodec<V>> void registerCodec(
-            Class<T> clazz) throws Exception
+    public static void registerCodec(
+            Class<? extends MessageCodec<? extends Message>> clazz) throws Exception
     {
         //Codec
-        Constructor<T> constructor = clazz.getConstructor();
-        T codec = constructor.newInstance();
+        Constructor<? extends MessageCodec<? extends Message>> constructor = clazz.getConstructor();
+        MessageCodec<? extends Message> codec = constructor.newInstance();
         codecs.put(codec.getOpcode(), codec);
-        final Class<V> msgClazz = (Class<V>) ((ParameterizedType) clazz
+        final Class<? extends Message> msgClazz = (Class<? extends Message>) ((ParameterizedType) clazz
                 .getGenericSuperclass()).getActualTypeArguments()[0];
         opcodes.put(msgClazz, codec.getOpcode());
     }
@@ -79,8 +79,8 @@ public class CodecResolver
         }
     }
     
-    public static <V extends Message, T extends MessageHandler<V>> void registerHandler(
-            Class<T> clazz) throws Exception
+    public static void registerHandler(
+            Class<? extends MessageHandler<? extends Message>> clazz) throws Exception
     {
         registerHandler(clazz, null);
     }
@@ -95,14 +95,16 @@ public class CodecResolver
         }
     }
     
-    public static <V extends Message, T extends MessageHandler<V>> void registerHandler(
-            Class<T> clazz, Map<String, Object> properties) throws Exception
+    public static void registerHandler(
+            Class<? extends MessageHandler<? extends Message>> clazz,
+            Map<String, Object> properties) throws Exception
     {
-        Constructor<T> constructor = clazz.getConstructor();
-        T handler = constructor.newInstance();
+        Constructor<? extends MessageHandler<? extends Message>> constructor = clazz
+                .getConstructor();
+        MessageHandler<? extends Message> handler = constructor.newInstance();
         handler.addProperties(properties);
         handler.init();
-        final Class<V> msgClazz = (Class<V>) ((ParameterizedType) clazz
+        final Class<? extends Message> msgClazz = (Class<? extends Message>) ((ParameterizedType) clazz
                 .getGenericSuperclass()).getActualTypeArguments()[0];
         handlers.put(msgClazz, handler);
     }
