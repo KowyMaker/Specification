@@ -35,7 +35,7 @@ public class ResourcesManager
         }
     }
     
-    public static <V extends ResourceFile, T extends ResourceFormat<V>> void register(
+    public static <T extends ResourceFormat<? extends ResourceFile>> void register(
             Class<T> clazz) throws NoSuchMethodException, SecurityException,
             InstantiationException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException
