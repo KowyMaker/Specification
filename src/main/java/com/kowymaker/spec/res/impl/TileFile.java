@@ -37,4 +37,18 @@ public class TileFile extends GraphicFile
     {
         this.image = image;
     }
+    
+    @Override
+    public String toString()
+    {
+        StringBuilder builder = new StringBuilder();
+        builder.append("TileFile [originX=");
+        builder.append(originX);
+        builder.append(", originY=");
+        builder.append(originY);
+        builder.append(", handlerClassName=");
+        builder.append(handlerClassName);
+        builder.append("]");
+        return builder.toString();
+    }
 }

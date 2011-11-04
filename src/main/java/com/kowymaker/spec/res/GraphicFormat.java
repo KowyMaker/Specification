@@ -18,6 +18,7 @@ package com.kowymaker.spec.res;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 
 import com.kowymaker.spec.utils.FileUtils;
 import com.kowymaker.spec.utils.data.DataBuffer;
@@ -40,7 +41,7 @@ public abstract class GraphicFormat<T extends GraphicFile> extends
         super(version, signature);
     }
     
-    public T load(File file) throws IOException
+    public T load(File file) throws Exception
     {
         byte[] data = FileUtils.load(file);
         DataBuffer buf = new DynamicDataBuffer();
@@ -48,23 +49,27 @@ public abstract class GraphicFormat<T extends GraphicFile> extends
         
         //Test signature
         byte[] testSignature = buf.readBytes(3);
-        if (!testSignature.equals(signature))
+        if (!Arrays.equals(testSignature, signature))
         {
-            return null;
+            throw new Exception("Signature not match!");
         }
         
         //Test version
         byte testVersion = buf.readByte();
         if (testVersion < version)
         {
-            return null;
+            throw new Exception("Old version!");
         }
         
         String handlerClassName = buf.readString(buf.readInt());
+        int width = buf.readInt();
+        int height = buf.readInt();
         
         T res = load(buf);
         
         res.setHandlerClassName(handlerClassName);
+        res.setWidth(width);
+        res.setHeight(height);
         
         return res;
     }
@@ -78,6 +83,8 @@ public abstract class GraphicFormat<T extends GraphicFile> extends
         buf.writeByte(version);
         buf.writeInteger(res.getHandlerClassName().length());
         buf.writeString(res.getHandlerClassName());
+        buf.writeInteger(res.getWidth());
+        buf.writeInteger(res.getHeight());
         
         save(res, buf);
         

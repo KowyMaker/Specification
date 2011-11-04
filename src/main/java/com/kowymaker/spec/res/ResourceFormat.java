@@ -43,21 +43,21 @@ public abstract class ResourceFormat<T extends ResourceFile>
         return b;
     }
     
-    public T load(File file) throws IOException
+    public T load(File file) throws Exception
     {
         byte[] data = FileUtils.load(file);
         
         return load(data);
     }
     
-    public T load(InputStream in) throws IOException
+    public T load(InputStream in) throws Exception
     {
         byte[] data = FileUtils.load(in);
         
         return load(data);
     }
     
-    public T load(byte[] data) throws IOException
+    public T load(byte[] data) throws Exception
     {
         DataBuffer buf = new DynamicDataBuffer();
         buf.setReadableBytes(data);

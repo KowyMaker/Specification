@@ -37,7 +37,7 @@ public class ConsoleOutputManager
                                                               global,
                                                               Level.SEVERE);
     
-    public static void register()
+    public static void register(String fileName)
     {
         try
         {
@@ -50,7 +50,7 @@ public class ConsoleOutputManager
             final ConsoleHandler console = new TerminalConsoleHandler();
             global.addHandler(console);
             
-            final File logFile = new File("server.log");
+            final File logFile = new File(fileName + ".log");
             final FileHandler fileHandler = new FileHandler(
                     logFile.getAbsolutePath(), 500000, 5, true);
             fileHandler.setFormatter(new LogFormatter());

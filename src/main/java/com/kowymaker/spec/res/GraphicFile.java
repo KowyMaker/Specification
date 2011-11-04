@@ -23,6 +23,8 @@ package com.kowymaker.spec.res;
 public class GraphicFile extends ResourceFile
 {
     protected String handlerClassName;
+    protected int    width;
+    protected int    height;
     
     public String getHandlerClassName()
     {
@@ -32,5 +34,25 @@ public class GraphicFile extends ResourceFile
     public void setHandlerClassName(String handlerClassName)
     {
         this.handlerClassName = handlerClassName;
+    }
+    
+    public int getWidth()
+    {
+        return width;
+    }
+    
+    public void setWidth(int width)
+    {
+        this.width = width;
+    }
+    
+    public int getHeight()
+    {
+        return height;
+    }
+    
+    public void setHeight(int height)
+    {
+        this.height = height;
     }
 }
