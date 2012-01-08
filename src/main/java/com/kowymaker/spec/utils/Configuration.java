@@ -307,6 +307,11 @@ public class Configuration
         }
     }
     
+    public void reset()
+    {
+        config.clear();
+    }
+    
     private static Configuration instance;
     
     public static Configuration getInstance()

@@ -22,7 +22,7 @@ public abstract class ResourceFormat<T extends ResourceFile>
         this.version = version;
     }
     
-    //Getters, setters
+    // Getters, setters
     
     public byte[] getSignature()
     {
@@ -34,7 +34,7 @@ public abstract class ResourceFormat<T extends ResourceFile>
         return version;
     }
     
-    //Utilities
+    // Utilities
     
     protected static byte[] sign(String signature)
     {
@@ -62,21 +62,28 @@ public abstract class ResourceFormat<T extends ResourceFile>
         DataBuffer buf = new DynamicDataBuffer();
         buf.setReadableBytes(data);
         
-        //Test signature
+        // Test signature
         byte[] testSignature = buf.readBytes(3);
         if (!testSignature.equals(signature))
         {
             return null;
         }
         
-        //Test version
+        // Test version
         byte testVersion = buf.readByte();
         if (testVersion < version)
         {
             return null;
         }
         
-        return load(buf);
+        // Name
+        int nameLength = buf.readInt();
+        String name = buf.readString(nameLength);
+        
+        T res = load(buf);
+        res.setName(name);
+        
+        return res;
     }
     
     public abstract T load(DataBuffer buf);
@@ -91,6 +98,8 @@ public abstract class ResourceFormat<T extends ResourceFile>
         DataBuffer buf = new DynamicDataBuffer();
         buf.writeBytes(signature);
         buf.writeByte(version);
+        buf.writeInteger(res.getName().length());
+        buf.writeString(res.getName());
         
         save(res, buf);
         
