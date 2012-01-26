@@ -1,54 +1,66 @@
 package com.kowymaker.spec.res.impl;
 
-import com.kowymaker.spec.res.GraphicFile;
+import com.kowymaker.spec.res.GraphicsFile;
+import com.kowymaker.spec.utils.res.Coordinates;
+import com.kowymaker.spec.utils.res.Dimension;
+import com.kowymaker.spec.utils.res.Sequencer;
 
-public class TileFile extends GraphicFile
+public class TileFile extends GraphicsFile
 {
-    private double originX;
-    private double originY;
-    private byte[] image;
+    private Coordinates origin    = new Coordinates();
+    private Coordinates left      = new Coordinates();
+    private Coordinates center    = new Coordinates();
+    private Dimension   dimension = new Dimension();
     
-    public double getOriginX()
+    private Sequencer   sequencer = new Sequencer();
+    
+    public Coordinates getOrigin()
     {
-        return originX;
+        return origin;
     }
     
-    public void setOriginX(double originX)
+    public void setOrigin(Coordinates origin)
     {
-        this.originX = originX;
+        this.origin = origin;
     }
     
-    public double getOriginY()
+    public Coordinates getLeft()
     {
-        return originY;
+        return left;
     }
     
-    public void setOriginY(double originY)
+    public void setLeft(Coordinates left)
     {
-        this.originY = originY;
+        this.left = left;
     }
     
-    public byte[] getImage()
+    public Coordinates getCenter()
     {
-        return image;
+        return center;
     }
     
-    public void setImage(byte[] image)
+    public void setCenter(Coordinates center)
     {
-        this.image = image;
+        this.center = center;
     }
     
-    @Override
-    public String toString()
+    public Dimension getDimension()
     {
-        StringBuilder builder = new StringBuilder();
-        builder.append("TileFile [originX=");
-        builder.append(originX);
-        builder.append(", originY=");
-        builder.append(originY);
-        builder.append(", handlerClassName=");
-        builder.append(handlerClassName);
-        builder.append("]");
-        return builder.toString();
+        return dimension;
+    }
+    
+    public void setDimension(Dimension dimension)
+    {
+        this.dimension = dimension;
+    }
+    
+    public Sequencer getSequencer()
+    {
+        return sequencer;
+    }
+    
+    public void setSequencer(Sequencer sequencer)
+    {
+        this.sequencer = sequencer;
     }
 }

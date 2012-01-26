@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.kowymaker.spec.res.impl.*;
 
+@SuppressWarnings("unused")
 public class ResourcesManager
 {
     private final static Map<Class<? extends ResourceFormat<? extends ResourceFile>>, ResourceFormat<? extends ResourceFile>> formats  = new HashMap<Class<? extends ResourceFormat<? extends ResourceFile>>, ResourceFormat<? extends ResourceFile>>();
@@ -15,7 +16,7 @@ public class ResourcesManager
     {
         try
         {
-            register(TileFormat.class);
+            
         }
         catch (Exception e)
         {

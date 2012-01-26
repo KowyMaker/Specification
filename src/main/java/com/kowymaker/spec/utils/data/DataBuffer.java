@@ -105,6 +105,21 @@ public abstract class DataBuffer
     
     protected abstract byte[] read(int start, int length);
     
+    public void read(byte[] bytes)
+    {
+        read(bytes, bytes.length);
+    }
+    
+    public void read(byte[] bytes, int length)
+    {
+        read(bytes, readPointer, length);
+    }
+    
+    public void read(byte[] bytes, int start, int length)
+    {
+        bytes = read(start, length);
+    }
+    
     public byte readByte()
     {
         return Primitives.toByte(read(1));
@@ -150,6 +165,12 @@ public abstract class DataBuffer
         return Primitives.toChar(read(2));
     }
     
+    public String readString()
+    {
+        int size = readInt();
+        return readString(size);
+    }
+    
     public String readString(int size)
     {
         return Primitives.toString(read(size));
@@ -192,6 +213,11 @@ public abstract class DataBuffer
     {
         write(b, writePointer, length);
         writePointer += length;
+    }
+    
+    public void writeDataBuffer(DataBuffer buf)
+    {
+        write(buf.getReadableBytes());
     }
     
     public void writeShort(short s)
@@ -261,6 +287,7 @@ public abstract class DataBuffer
     
     public void writeString(String s)
     {
+        write(Primitives.toByta(s.length()));
         write(Primitives.toByta(s));
     }
     
