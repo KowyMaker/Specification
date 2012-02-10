@@ -197,6 +197,8 @@ public class Sequencer implements Encodable
     
     public static class Frame implements Encodable
     {
+        private int    width;
+        private int    height;
         private byte[] data;
         
         public Frame()
@@ -207,6 +209,26 @@ public class Sequencer implements Encodable
         public Frame(byte[] data)
         {
             this.data = data;
+        }
+        
+        public int getWidth()
+        {
+            return width;
+        }
+        
+        public void setWidth(int width)
+        {
+            this.width = width;
+        }
+        
+        public int getHeight()
+        {
+            return height;
+        }
+        
+        public void setHeight(int height)
+        {
+            this.height = height;
         }
         
         public byte[] getData()
@@ -221,12 +243,16 @@ public class Sequencer implements Encodable
         
         public void encode(DataBuffer buf)
         {
+            buf.writeInteger(width);
+            buf.writeInteger(height);
             buf.writeInteger(data.length);
             buf.writeBytes(data);
         }
         
         public void decode(DataBuffer buf)
         {
+            width = buf.readInt();
+            height = buf.readInt();
             int size = buf.readInt();
             data = buf.readBytes(size);
         }

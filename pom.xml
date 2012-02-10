@@ -47,17 +47,11 @@
   		<version>1.1.1</version>
   	</dependency>
   </dependencies>
-    <distributionManagement>
-        <repository>
-            <id>kokabsolu</id>
-            <url>ftp://188.40.41.225/public_html/maven/maven2/</url>
-        </repository>
-    </distributionManagement>
     <repositories>
-       <repository>
-           <id>kokabsolu-repo</id>
-           <url>http://maven.kokabsolu.com/maven2/</url>
-       </repository>
+        <repository>
+            <id>kiwi-jenkins-repo</id>
+            <url>http://ci.kokaelkiwi.eu:8080/plugin/repository/everything/</url>
+        </repository>
     </repositories>
     <build>
         <finalName>kowymaker-specification-${project.version}</finalName>
