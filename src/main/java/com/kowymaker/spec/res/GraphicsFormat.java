@@ -23,7 +23,7 @@ public abstract class GraphicsFormat<T extends GraphicsFile> extends
     }
     
     @Override
-    public void save(T res, DataBuffer buf)
+    protected void saveToBuffer(T res, DataBuffer buf)
     {
         buf.writeString(res.getHandlerClassName());
         

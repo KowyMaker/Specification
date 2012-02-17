@@ -71,40 +71,23 @@ public abstract class ResourceFormat<T extends ResourceFile>
         
         // Test signature
         byte[] testSignature = buf.readBytes(5);
-        if (!testSignature.equals(signature))
+        if (!Arrays.equals(testSignature, signature))
         {
-            return null;
+            throw new RuntimeException("Signature mismatch!");
         }
         
         // Test version
         byte testVersion = buf.readByte();
         if (testVersion < version)
         {
-            return null;
+            throw new RuntimeException("Too old version!");
         }
         
         // Name
         String name = buf.readString();
         
-        int dataLength = buf.getReadableBytesSize() - buf.getReadPointer() - 4;
-        
-        byte[] dataBytes = new byte[dataLength];
-        buf.read(dataBytes);
-        
-        byte[] checksum = new byte[4];
-        buf.read(checksum, buf.getReadableBytesSize() - 4, 4);
-        
-        T res = null;
-        
-        if (Checksum.verify(dataBytes, checksum))
-        {
-            res = load(buf);
-            res.setName(name);
-        }
-        else
-        {
-            throw new Exception("Checksum doesn't correspond!");
-        }
+        T res = load(buf);
+        res.setName(name);
         
         return res;
     }
@@ -119,63 +102,21 @@ public abstract class ResourceFormat<T extends ResourceFile>
     public void save(T res, OutputStream out) throws IOException
     {
         DataBuffer buf = new DynamicDataBuffer();
-        buf.writeBytes(signature);
-        buf.writeByte(version);
-        buf.writeString(res.getName());
         
-        DataBuffer dataBuffer = new DynamicDataBuffer();
-        save(res, dataBuffer);
-        
-        byte[] dataBytes = dataBuffer.getWritedBytes();
-        byte[] checksum = Checksum.generate(dataBytes);
-        
-        dataBuffer.copyWritedBytesToReadableBytes();
-        
-        buf.writeDataBuffer(dataBuffer);
-        buf.writeBytes(checksum);
+        save(res, buf);
         
         IOUtils.write(buf.getWritedBytes(), out);
     }
     
-    public abstract void save(T res, DataBuffer buf);
-    
-    public static class Checksum
+    public void save(T res, DataBuffer buf)
     {
-        private static MessageDigest digest;
+        buf.writeBytes(signature);
+        buf.writeByte(version);
+        buf.writeString(res.getName());
         
-        static
-        {
-            try
-            {
-                digest = MessageDigest.getInstance("MD5");
-            }
-            catch (NoSuchAlgorithmException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        
-        public static byte[] generate(byte[] bytes)
-        {
-            byte[] checksum = new byte[4];
-            
-            byte[] digested = digest.digest(bytes);
-            System.arraycopy(digested, 0, checksum, 0, 4);
-            
-            return checksum;
-        }
-        
-        public static boolean verify(byte[] bytes, byte[] signature)
-        {
-            byte[] checksum = new byte[4];
-            
-            byte[] digested = digest.digest(bytes);
-            System.arraycopy(digested, 0, checksum, 0, 4);
-            
-            boolean result = Arrays.equals(signature, checksum);
-            
-            return result;
-        }
+        saveToBuffer(res, buf);
     }
+    
+    protected abstract void saveToBuffer(T res, DataBuffer buf);
     
 }

@@ -79,6 +79,42 @@ public class ImageCodec
         return bytes;
     }
     
+    public static Dimension getDimension(File file) throws IOException
+    {
+        String ext = file.getName().substring(
+                file.getName().lastIndexOf('.') + 1);
+        
+        return getDimension(new FileInputStream(file),
+                Format.getFormatFromExtension(ext));
+    }
+    
+    public static Dimension getDimension(byte[] bytes, Format format)
+            throws IOException
+    {
+        return getDimension(new ByteArrayInputStream(bytes), format);
+    }
+    
+    public static Dimension getDimension(InputStream in, Format format) throws IOException
+    {
+        Dimension dim = null;
+        
+        switch (format)
+        {
+            case PNG:
+                dim = getDimensionPNG(in);
+                break;
+        }
+        
+        return dim;
+    }
+    
+    public static Dimension getDimensionPNG(InputStream in) throws IOException
+    {
+        PNGDecoder decoder = new PNGDecoder(in);
+        
+        return new Dimension(decoder.getWidth(), decoder.getHeight());
+    }
+    
     public static enum Format
     {
         PNG("png");

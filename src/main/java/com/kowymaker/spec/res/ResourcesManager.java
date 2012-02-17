@@ -16,7 +16,7 @@ public class ResourcesManager
     {
         try
         {
-            
+            register(TileFormat.class);
         }
         catch (Exception e)
         {

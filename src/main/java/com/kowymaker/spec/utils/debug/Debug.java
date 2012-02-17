@@ -8,6 +8,7 @@ public class Debug
 {
     private final static Map<String, Long>   values  = Maps.newLinkedHashMap();
     private final static Map<String, Locker> lockers = Maps.newLinkedHashMap();
+    private final static Map<String, Object> datas   = Maps.newLinkedHashMap();
     
     public static void update(String name)
     {
@@ -71,6 +72,17 @@ public class Debug
     public static Locker getLocker(String name)
     {
         return lockers.get(name);
+    }
+    
+    public static void setData(String name, Object value)
+    {
+        datas.put(name, value);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static <T> T getData(String name)
+    {
+        return (T) datas.get(name);
     }
     
     public static interface Locker
