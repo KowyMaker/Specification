@@ -17,7 +17,7 @@ public abstract class GraphicsFormat<T extends GraphicsFile> extends
         String handlerClassName = buf.readString();
         
         T res = loadData(buf);
-        res.setHandlerClass(handlerClassName);
+        res.setHandlerClassName(handlerClassName);
         
         return res;
     }

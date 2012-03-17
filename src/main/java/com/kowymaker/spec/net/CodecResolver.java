@@ -31,11 +31,10 @@ import com.kowymaker.spec.net.msg.*;
 @SuppressWarnings("unchecked")
 public class CodecResolver
 {
-    private final static Map<Byte, MessageCodec<? extends Message>>                       codecs   = new HashMap<Byte, MessageCodec<? extends Message>>();
-    private final static Map<Class<? extends Message>, MessageHandler<? extends Message>> handlers = new HashMap<Class<? extends Message>, MessageHandler<? extends Message>>();
-    private final static Map<Class<? extends Message>, Byte>                              opcodes  = new HashMap<Class<? extends Message>, Byte>();
+    private final Map<Byte, MessageCodec<? extends Message>>                       codecs   = new HashMap<Byte, MessageCodec<? extends Message>>();
+    private final Map<Class<? extends Message>, MessageHandler<? extends Message>> handlers = new HashMap<Class<? extends Message>, MessageHandler<? extends Message>>();
+    private final Map<Class<? extends Message>, Byte>                              opcodes  = new HashMap<Class<? extends Message>, Byte>();
     
-    static
     {
         try
         {
@@ -47,7 +46,7 @@ public class CodecResolver
         }
     }
     
-    public static void registerCodec(
+    public void registerCodec(
             Class<? extends MessageCodec<? extends Message>>... classes)
             throws Exception
     {
@@ -57,11 +56,13 @@ public class CodecResolver
         }
     }
     
-    public static void registerCodec(
-            Class<? extends MessageCodec<? extends Message>> clazz) throws Exception
+    public void registerCodec(
+            Class<? extends MessageCodec<? extends Message>> clazz)
+            throws Exception
     {
-        //Codec
-        Constructor<? extends MessageCodec<? extends Message>> constructor = clazz.getConstructor();
+        // Codec
+        Constructor<? extends MessageCodec<? extends Message>> constructor = clazz
+                .getConstructor();
         MessageCodec<? extends Message> codec = constructor.newInstance();
         codecs.put(codec.getOpcode(), codec);
         final Class<? extends Message> msgClazz = (Class<? extends Message>) ((ParameterizedType) clazz
@@ -69,7 +70,7 @@ public class CodecResolver
         opcodes.put(msgClazz, codec.getOpcode());
     }
     
-    public static void registerHandler(
+    public void registerHandler(
             Class<? extends MessageHandler<? extends Message>>... classes)
             throws Exception
     {
@@ -79,13 +80,14 @@ public class CodecResolver
         }
     }
     
-    public static void registerHandler(
-            Class<? extends MessageHandler<? extends Message>> clazz) throws Exception
+    public void registerHandler(
+            Class<? extends MessageHandler<? extends Message>> clazz)
+            throws Exception
     {
         registerHandler(clazz, null);
     }
     
-    public static void registerHandler(Map<String, Object> properties,
+    public void registerHandler(Map<String, Object> properties,
             Class<? extends MessageHandler<? extends Message>>... classes)
             throws Exception
     {
@@ -95,7 +97,7 @@ public class CodecResolver
         }
     }
     
-    public static void registerHandler(
+    public void registerHandler(
             Class<? extends MessageHandler<? extends Message>> clazz,
             Map<String, Object> properties) throws Exception
     {
@@ -109,19 +111,18 @@ public class CodecResolver
         handlers.put(msgClazz, handler);
     }
     
-    public static <V extends Message, T extends MessageCodec<V>> T getCodec(
-            byte opcode)
+    public <V extends Message, T extends MessageCodec<V>> T getCodec(byte opcode)
     {
         return (T) codecs.get(opcode);
     }
     
-    public static <V extends Message, T extends MessageCodec<V>> T getCodec(
+    public <V extends Message, T extends MessageCodec<V>> T getCodec(
             Class<V> clazz)
     {
         return (T) codecs.get(opcodes.get(clazz));
     }
     
-    public static <V extends Message, T extends MessageHandler<V>> T getHandler(
+    public <V extends Message, T extends MessageHandler<V>> T getHandler(
             Class<V> clazz)
     {
         return (T) handlers.get(clazz);
