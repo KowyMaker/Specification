@@ -3,7 +3,6 @@ package com.kowymaker.spec.res.impl;
 import com.kowymaker.spec.res.GraphicsFormat;
 import com.kowymaker.spec.utils.data.DataBuffer;
 import com.kowymaker.spec.utils.res.Coordinates;
-import com.kowymaker.spec.utils.res.Dimension;
 import com.kowymaker.spec.utils.res.Sequencer;
 
 public class TileFormat extends GraphicsFormat<TileFile>
@@ -19,21 +18,21 @@ public class TileFormat extends GraphicsFormat<TileFile>
     {
         TileFile file = new TileFile();
         
-        Coordinates origin = new Coordinates();
-        origin.decode(buf);
-        file.setOrigin(origin);
-        
         Coordinates left = new Coordinates();
         left.decode(buf);
         file.setLeft(left);
+        
+        Coordinates right = new Coordinates();
+        right.decode(buf);
+        file.setRight(right);
         
         Coordinates center = new Coordinates();
         center.decode(buf);
         file.setCenter(center);
         
-        Dimension dimension = new Dimension();
-        dimension.decode(buf);
-        file.setDimension(dimension);
+        Coordinates bottom = new Coordinates();
+        bottom.decode(buf);
+        file.setBottom(bottom);
         
         Sequencer sequencer = new Sequencer();
         sequencer.decode(buf);
@@ -45,10 +44,10 @@ public class TileFormat extends GraphicsFormat<TileFile>
     @Override
     protected void saveData(TileFile res, DataBuffer buf)
     {
-        res.getOrigin().encode(buf);
         res.getLeft().encode(buf);
+        res.getRight().encode(buf);
         res.getCenter().encode(buf);
-        res.getDimension().encode(buf);
+        res.getBottom().encode(buf);
         res.getSequencer().encode(buf);
     }
     

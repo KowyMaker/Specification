@@ -2,27 +2,16 @@ package com.kowymaker.spec.res.impl;
 
 import com.kowymaker.spec.res.GraphicsFile;
 import com.kowymaker.spec.utils.res.Coordinates;
-import com.kowymaker.spec.utils.res.Dimension;
 import com.kowymaker.spec.utils.res.Sequencer;
 
 public class TileFile extends GraphicsFile
 {
-    private Coordinates origin    = new Coordinates();
     private Coordinates left      = new Coordinates();
+    private Coordinates right     = new Coordinates();
     private Coordinates center    = new Coordinates();
-    private Dimension   dimension = new Dimension();
+    private Coordinates bottom    = new Coordinates();
     
     private Sequencer   sequencer = new Sequencer();
-    
-    public Coordinates getOrigin()
-    {
-        return origin;
-    }
-    
-    public void setOrigin(Coordinates origin)
-    {
-        this.origin = origin;
-    }
     
     public Coordinates getLeft()
     {
@@ -32,6 +21,16 @@ public class TileFile extends GraphicsFile
     public void setLeft(Coordinates left)
     {
         this.left = left;
+    }
+    
+    public Coordinates getRight()
+    {
+        return right;
+    }
+    
+    public void setRight(Coordinates right)
+    {
+        this.right = right;
     }
     
     public Coordinates getCenter()
@@ -44,14 +43,14 @@ public class TileFile extends GraphicsFile
         this.center = center;
     }
     
-    public Dimension getDimension()
+    public Coordinates getBottom()
     {
-        return dimension;
+        return bottom;
     }
     
-    public void setDimension(Dimension dimension)
+    public void setBottom(Coordinates bottom)
     {
-        this.dimension = dimension;
+        this.bottom = bottom;
     }
     
     public Sequencer getSequencer()

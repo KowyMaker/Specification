@@ -39,6 +39,11 @@ public class Coordinates implements Encodable
         this.y = y;
     }
     
+    public void setLocation(Coordinates coord)
+    {
+        setLocation(coord.getX(), coord.getY());
+    }
+    
     public void setLocation(double x, double y)
     {
         this.x = x;
