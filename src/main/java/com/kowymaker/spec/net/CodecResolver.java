@@ -21,8 +21,10 @@ import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.kowymaker.spec.net.codec.*;
-import com.kowymaker.spec.net.msg.*;
+import com.kowymaker.spec.net.codec.ConnectCodec;
+import com.kowymaker.spec.net.codec.DisconnectCodec;
+import com.kowymaker.spec.net.codec.MessageCodec;
+import com.kowymaker.spec.net.msg.Message;
 
 /**
  * @author Koka El Kiwi
@@ -40,7 +42,7 @@ public class CodecResolver
         {
             registerCodec(ConnectCodec.class, DisconnectCodec.class);
         }
-        catch (Exception e)
+        catch (final Exception e)
         {
             e.printStackTrace();
         }
@@ -50,7 +52,7 @@ public class CodecResolver
             Class<? extends MessageCodec<? extends Message>>... classes)
             throws Exception
     {
-        for (Class<? extends MessageCodec<? extends Message>> clazz : classes)
+        for (final Class<? extends MessageCodec<? extends Message>> clazz : classes)
         {
             registerCodec(clazz);
         }
@@ -61,9 +63,9 @@ public class CodecResolver
             throws Exception
     {
         // Codec
-        Constructor<? extends MessageCodec<? extends Message>> constructor = clazz
+        final Constructor<? extends MessageCodec<? extends Message>> constructor = clazz
                 .getConstructor();
-        MessageCodec<? extends Message> codec = constructor.newInstance();
+        final MessageCodec<? extends Message> codec = constructor.newInstance();
         codecs.put(codec.getOpcode(), codec);
         final Class<? extends Message> msgClazz = (Class<? extends Message>) ((ParameterizedType) clazz
                 .getGenericSuperclass()).getActualTypeArguments()[0];
@@ -74,7 +76,7 @@ public class CodecResolver
             Class<? extends MessageHandler<? extends Message>>... classes)
             throws Exception
     {
-        for (Class<? extends MessageHandler<? extends Message>> clazz : classes)
+        for (final Class<? extends MessageHandler<? extends Message>> clazz : classes)
         {
             registerHandler(clazz);
         }
@@ -91,7 +93,7 @@ public class CodecResolver
             Class<? extends MessageHandler<? extends Message>>... classes)
             throws Exception
     {
-        for (Class<? extends MessageHandler<? extends Message>> clazz : classes)
+        for (final Class<? extends MessageHandler<? extends Message>> clazz : classes)
         {
             registerHandler(clazz, properties);
         }
@@ -101,9 +103,10 @@ public class CodecResolver
             Class<? extends MessageHandler<? extends Message>> clazz,
             Map<String, Object> properties) throws Exception
     {
-        Constructor<? extends MessageHandler<? extends Message>> constructor = clazz
+        final Constructor<? extends MessageHandler<? extends Message>> constructor = clazz
                 .getConstructor();
-        MessageHandler<? extends Message> handler = constructor.newInstance();
+        final MessageHandler<? extends Message> handler = constructor
+                .newInstance();
         handler.addProperties(properties);
         handler.init();
         final Class<? extends Message> msgClazz = (Class<? extends Message>) ((ParameterizedType) clazz

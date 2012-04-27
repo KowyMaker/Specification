@@ -18,7 +18,7 @@ public class ImageCodec
 {
     public static byte[] decode(File file, Goal goal) throws IOException
     {
-        String ext = file.getName().substring(
+        final String ext = file.getName().substring(
                 file.getName().lastIndexOf('.') + 1);
         
         return decode(new FileInputStream(file),
@@ -66,10 +66,10 @@ public class ImageCodec
                 break;
             
             case RAW:
-                PNGDecoder decoder = new PNGDecoder(in);
-                ByteBuffer buffer = ByteBuffer.allocate(decoder.getWidth()
-                        * decoder.getHeight() * 4);
-                TextureFormat format = TextureFormat.RGBA;
+                final PNGDecoder decoder = new PNGDecoder(in);
+                final ByteBuffer buffer = ByteBuffer.allocate(decoder
+                        .getWidth() * decoder.getHeight() * 4);
+                final TextureFormat format = TextureFormat.RGBA;
                 decoder.decode(buffer, 4, format);
                 
                 bytes = buffer.array();
@@ -81,7 +81,7 @@ public class ImageCodec
     
     public static Dimension getDimension(File file) throws IOException
     {
-        String ext = file.getName().substring(
+        final String ext = file.getName().substring(
                 file.getName().lastIndexOf('.') + 1);
         
         return getDimension(new FileInputStream(file),
@@ -94,7 +94,8 @@ public class ImageCodec
         return getDimension(new ByteArrayInputStream(bytes), format);
     }
     
-    public static Dimension getDimension(InputStream in, Format format) throws IOException
+    public static Dimension getDimension(InputStream in, Format format)
+            throws IOException
     {
         Dimension dim = null;
         
@@ -110,7 +111,7 @@ public class ImageCodec
     
     public static Dimension getDimensionPNG(InputStream in) throws IOException
     {
-        PNGDecoder decoder = new PNGDecoder(in);
+        final PNGDecoder decoder = new PNGDecoder(in);
         
         return new Dimension(decoder.getWidth(), decoder.getHeight());
     }
@@ -140,9 +141,9 @@ public class ImageCodec
         
         static
         {
-            for (Format format : values())
+            for (final Format format : values())
             {
-                for (String ext : format.extensions)
+                for (final String ext : format.extensions)
                 {
                     formats.put(ext, format);
                 }

@@ -10,12 +10,12 @@ public class FlagsTest
     @Test
     public void test()
     {
-        Flags flags = new Flags(8);
+        final Flags flags = new Flags(8);
         
-        Flags.Flag test1 = flags.createFlag("test1");
-        Flags.Flag test2 = flags.createFlag("test2");
-        Flags.Flag test3 = flags.createFlag("test3");
-        Flags.Flag test4 = flags.createFlag("test4");
+        final Flags.Flag test1 = flags.createFlag("test1");
+        final Flags.Flag test2 = flags.createFlag("test2");
+        final Flags.Flag test3 = flags.createFlag("test3");
+        final Flags.Flag test4 = flags.createFlag("test4");
         
         flags.setFlag(test2, true);
         flags.setFlag(test3, true);

@@ -15,10 +15,15 @@ public class Sequencer implements Encodable
     
     public Sequence createSequence(String name)
     {
-        Sequence sequence = new Sequence(name);
+        final Sequence sequence = new Sequence(name);
         sequences.put(name, sequence);
         
         return sequence;
+    }
+    
+    public void removeSequence(String name)
+    {
+        sequences.remove(name);
     }
     
     public Map<String, Sequence> getSequences()
@@ -34,7 +39,7 @@ public class Sequencer implements Encodable
     public void encode(DataBuffer buf)
     {
         buf.writeInteger(sequences.size());
-        for (Sequence sequence : sequences.values())
+        for (final Sequence sequence : sequences.values())
         {
             sequence.encode(buf);
         }
@@ -42,10 +47,10 @@ public class Sequencer implements Encodable
     
     public void decode(DataBuffer buf)
     {
-        int num = buf.readInt();
+        final int num = buf.readInt();
         for (int i = 0; i < num; i++)
         {
-            Sequence sequence = new Sequence(null);
+            final Sequence sequence = new Sequence(null);
             sequence.decode(buf);
             
             sequences.put(sequence.name, sequence);
@@ -90,16 +95,21 @@ public class Sequencer implements Encodable
         
         public Frame createFrame()
         {
-            Frame frame = new Frame();
+            final Frame frame = new Frame();
             
             frames.add(frame);
             
             return frame;
         }
         
+        public void deleteFrame(int index)
+        {
+            frames.remove(index);
+        }
+        
         public Frame getFrame(int index)
         {
-            Frame frame = null;
+            final Frame frame = null;
             
             if (index < frames.size())
             {
@@ -107,6 +117,11 @@ public class Sequencer implements Encodable
             }
             
             return frame;
+        }
+        
+        public int length()
+        {
+            return getLength();
         }
         
         public int getLength()
@@ -119,7 +134,7 @@ public class Sequencer implements Encodable
             buf.writeString(name);
             buf.writeInteger(fps);
             buf.writeInteger(frames.size());
-            for (Frame frame : frames)
+            for (final Frame frame : frames)
             {
                 frame.encode(buf);
             }
@@ -129,10 +144,10 @@ public class Sequencer implements Encodable
         {
             name = buf.readString();
             fps = buf.readInt();
-            int length = buf.readInt();
+            final int length = buf.readInt();
             for (int i = 0; i < length; i++)
             {
-                Frame frame = new Frame();
+                final Frame frame = new Frame();
                 frames.add(frame);
                 
                 frame.decode(buf);
@@ -177,21 +192,29 @@ public class Sequencer implements Encodable
         
         public Frame get(long time)
         {
-            Frame frame = null;
+            return sequence.getFrame(getIndex(time));
+        }
+        
+        public int getIndex()
+        {
+            return getIndex(System.currentTimeMillis());
+        }
+        
+        public int getIndex(long time)
+        {
+            int index = 0;
             
-            long diff = time - start;
+            final long diff = time - start;
             
             if (diff > 0)
             {
-                int r = (int) (new BigDecimal(diff)
+                index = (int) (new BigDecimal(diff)
                         .divide(new BigDecimal(1000))
                         .multiply(new BigDecimal(sequence.fps)).floatValue() % sequence
                         .getLength());
-                
-                frame = sequence.getFrame(r);
             }
             
-            return frame;
+            return index;
         }
     }
     
@@ -253,7 +276,7 @@ public class Sequencer implements Encodable
         {
             width = buf.readInt();
             height = buf.readInt();
-            int size = buf.readInt();
+            final int size = buf.readInt();
             data = buf.readBytes(size);
         }
     }

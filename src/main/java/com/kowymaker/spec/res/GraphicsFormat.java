@@ -14,9 +14,9 @@ public abstract class GraphicsFormat<T extends GraphicsFile> extends
     @Override
     public T load(DataBuffer buf)
     {
-        String handlerClassName = buf.readString();
+        final String handlerClassName = buf.readString();
         
-        T res = loadData(buf);
+        final T res = loadData(buf);
         res.setHandlerClassName(handlerClassName);
         
         return res;

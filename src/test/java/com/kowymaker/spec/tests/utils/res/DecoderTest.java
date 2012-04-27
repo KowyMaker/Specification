@@ -17,18 +17,19 @@ public class DecoderTest
     @Test
     public void test() throws IOException
     {
-        File file = new File("decode_png.png");
+        final File file = new File("decode_png.png");
         
-        long start = System.currentTimeMillis();
-        byte[] bytes = ImageCodec.decode(file, ImageCodec.Goal.RESOURCE);
-        long end = System.currentTimeMillis();
-        long diff = end - start;
+        final long start = System.currentTimeMillis();
+        final byte[] bytes = ImageCodec.decode(file, ImageCodec.Goal.RESOURCE);
+        final long end = System.currentTimeMillis();
+        final long diff = end - start;
         
         System.out.println("Diff      : " + diff + " ms.");
         
         System.out.println("Data size : " + bytes.length + " bytes.");
         
-        BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
+        final BufferedImage image = ImageIO
+                .read(new ByteArrayInputStream(bytes));
         
         System.out.println("Width     : " + image.getWidth());
         System.out.println("Height    : " + image.getHeight());

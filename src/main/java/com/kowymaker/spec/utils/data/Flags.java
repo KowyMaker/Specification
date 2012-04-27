@@ -23,7 +23,7 @@ public class Flags
     
     public Flags(int size)
     {
-        int r = size % 8;
+        final int r = size % 8;
         int q = (size - r) / 8;
         
         if (r > 0)
@@ -41,8 +41,8 @@ public class Flags
         
         if (!flags.containsKey(name) && num < bytes.length)
         {
-            int n = num;
-            byte index = createIndex();
+            final int n = num;
+            final byte index = createIndex();
             flag = new Flag(name, n, index);
             
             flags.put(name, flag);
@@ -60,8 +60,8 @@ public class Flags
     {
         if (flag != null)
         {
-            int n = flag.num;
-            byte index = flag.index;
+            final int n = flag.num;
+            final byte index = flag.index;
             
             byte b = bytes[n];
             
@@ -87,12 +87,12 @@ public class Flags
     {
         if (flag != null)
         {
-            int n = flag.num;
-            byte index = flag.index;
+            final int n = flag.num;
+            final byte index = flag.index;
             
-            byte b = bytes[n];
+            final byte b = bytes[n];
             
-            return ((b & index) == index);
+            return (b & index) == index;
         }
         
         return false;
@@ -100,7 +100,7 @@ public class Flags
     
     private byte createIndex()
     {
-        byte index = lastIndex;
+        final byte index = lastIndex;
         
         lastIndex *= 2;
         

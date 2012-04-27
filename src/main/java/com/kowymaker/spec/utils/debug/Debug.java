@@ -22,8 +22,8 @@ public class Debug
             return 0;
         }
         
-        long value = values.get(name);
-        long diff = System.currentTimeMillis() - value;
+        final long value = values.get(name);
+        final long diff = System.currentTimeMillis() - value;
         
         return diff;
     }
@@ -35,8 +35,8 @@ public class Debug
             return 0;
         }
         
-        long diff = diff(name);
-        long current = values.get(name);
+        final long diff = diff(name);
+        final long current = values.get(name);
         values.put(name, current + diff);
         
         return diff;
@@ -133,8 +133,8 @@ public class Debug
     
     public static class CounterLocker implements Locker
     {
-        private int counter = 0;
-        private int max;
+        private int       counter = 0;
+        private final int max;
         
         public CounterLocker(int max)
         {

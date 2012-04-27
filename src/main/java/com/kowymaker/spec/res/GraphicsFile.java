@@ -12,9 +12,9 @@ public class GraphicsFile extends ResourceFile
         this.handlerClassName = handlerClassName;
         try
         {
-            this.handler = createHandler();
+            handler = createHandler();
         }
-        catch (Exception e)
+        catch (final Exception e)
         {
             e.printStackTrace();
         }
@@ -28,7 +28,7 @@ public class GraphicsFile extends ResourceFile
     @SuppressWarnings("unchecked")
     public Class<GraphicsHandler> getHandlerClass() throws Exception
     {
-        Class<GraphicsHandler> handlerClass = (Class<GraphicsHandler>) getClass()
+        final Class<GraphicsHandler> handlerClass = (Class<GraphicsHandler>) getClass()
                 .getClassLoader().loadClass(handlerClassName);
         return handlerClass;
     }
@@ -50,10 +50,10 @@ public class GraphicsFile extends ResourceFile
             return null;
         }
         
-        Class<GraphicsHandler> clazz = getHandlerClass();
-        Constructor<GraphicsHandler> constructor = clazz
+        final Class<GraphicsHandler> clazz = getHandlerClass();
+        final Constructor<GraphicsHandler> constructor = clazz
                 .getConstructor(GraphicsFile.class);
-        GraphicsHandler handler = constructor.newInstance(this);
+        final GraphicsHandler handler = constructor.newInstance(this);
         
         return handler;
     }

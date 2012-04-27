@@ -58,7 +58,13 @@ public class Coordinates implements Encodable
     
     public void decode(DataBuffer buf)
     {
-        this.x = buf.readDouble();
-        this.y = buf.readDouble();
+        x = buf.readDouble();
+        y = buf.readDouble();
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "[" + x + ", " + y + "]";
     }
 }

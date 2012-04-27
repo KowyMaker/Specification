@@ -53,7 +53,7 @@ public abstract class MessageHandler<T extends Message>
     @SuppressWarnings("unchecked")
     public boolean handle(ChannelHandlerContext ctx, MessageEvent e)
     {
-        T msg = (T) e.getMessage();
+        final T msg = (T) e.getMessage();
         return handle(ctx, e, msg);
     }
     

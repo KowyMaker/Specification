@@ -18,7 +18,7 @@ package com.kowymaker.spec.net.msg;
 
 /**
  * @author Koka El Kiwi
- *
+ * 
  */
 public class DisconnectMessage extends Message
 {

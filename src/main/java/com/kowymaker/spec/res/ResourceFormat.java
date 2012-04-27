@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
@@ -52,41 +50,41 @@ public abstract class ResourceFormat<T extends ResourceFile>
     
     public T load(File file) throws Exception
     {
-        byte[] data = FileUtils.readFileToByteArray(file);
+        final byte[] data = FileUtils.readFileToByteArray(file);
         
         return load(data);
     }
     
     public T load(InputStream in) throws Exception
     {
-        byte[] data = IOUtils.toByteArray(in);
+        final byte[] data = IOUtils.toByteArray(in);
         
         return load(data);
     }
     
     public T load(byte[] data) throws Exception
     {
-        DataBuffer buf = new DynamicDataBuffer();
+        final DataBuffer buf = new DynamicDataBuffer();
         buf.setReadableBytes(data);
         
         // Test signature
-        byte[] testSignature = buf.readBytes(5);
+        final byte[] testSignature = buf.readBytes(5);
         if (!Arrays.equals(testSignature, signature))
         {
             throw new RuntimeException("Signature mismatch!");
         }
         
         // Test version
-        byte testVersion = buf.readByte();
+        final byte testVersion = buf.readByte();
         if (testVersion < version)
         {
             throw new RuntimeException("Too old version!");
         }
         
         // Name
-        String name = buf.readString();
+        final String name = buf.readString();
         
-        T res = load(buf);
+        final T res = load(buf);
         res.setName(name);
         
         return res;
@@ -101,7 +99,7 @@ public abstract class ResourceFormat<T extends ResourceFile>
     
     public void save(T res, OutputStream out) throws IOException
     {
-        DataBuffer buf = new DynamicDataBuffer();
+        final DataBuffer buf = new DynamicDataBuffer();
         
         save(res, buf);
         

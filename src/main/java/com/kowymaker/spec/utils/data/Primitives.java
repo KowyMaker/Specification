@@ -28,8 +28,8 @@ public class Primitives
     
     public static byte[] toByta(short data)
     {
-        return new byte[] { (byte) ((data >> 8) & 0xff),
-                (byte) ((data >> 0) & 0xff), };
+        return new byte[] { (byte) (data >> 8 & 0xff),
+                (byte) (data >> 0 & 0xff), };
     }
     
     public static byte[] toByta(short[] data)
@@ -51,8 +51,8 @@ public class Primitives
     
     public static byte[] toByta(char data)
     {
-        return new byte[] { (byte) ((data >> 8) & 0xff),
-                (byte) ((data >> 0) & 0xff), };
+        return new byte[] { (byte) (data >> 8 & 0xff),
+                (byte) (data >> 0 & 0xff), };
     }
     
     public static byte[] toByta(char[] data)
@@ -74,9 +74,9 @@ public class Primitives
     
     public static byte[] toByta(int data)
     {
-        return new byte[] { (byte) ((data >> 24) & 0xff),
-                (byte) ((data >> 16) & 0xff), (byte) ((data >> 8) & 0xff),
-                (byte) ((data >> 0) & 0xff), };
+        return new byte[] { (byte) (data >> 24 & 0xff),
+                (byte) (data >> 16 & 0xff), (byte) (data >> 8 & 0xff),
+                (byte) (data >> 0 & 0xff), };
     }
     
     public static byte[] toByta(int[] data)
@@ -109,11 +109,11 @@ public class Primitives
     
     public static byte[] toByta(long data)
     {
-        return new byte[] { (byte) ((data >> 56) & 0xff),
-                (byte) ((data >> 48) & 0xff), (byte) ((data >> 40) & 0xff),
-                (byte) ((data >> 32) & 0xff), (byte) ((data >> 24) & 0xff),
-                (byte) ((data >> 16) & 0xff), (byte) ((data >> 8) & 0xff),
-                (byte) ((data >> 0) & 0xff), };
+        return new byte[] { (byte) (data >> 56 & 0xff),
+                (byte) (data >> 48 & 0xff), (byte) (data >> 40 & 0xff),
+                (byte) (data >> 32 & 0xff), (byte) (data >> 24 & 0xff),
+                (byte) (data >> 16 & 0xff), (byte) (data >> 8 & 0xff),
+                (byte) (data >> 0 & 0xff), };
     }
     
     public static byte[] toByta(long[] data)
@@ -195,8 +195,8 @@ public class Primitives
         // ----------
         final int len = data.length;
         final byte[] lena = toByta(len); // int conversion; length array = lena
-        final byte[] byts = new byte[lena.length + (len / 8)
-                + ((len % 8) != 0 ? 1 : 0)];
+        final byte[] byts = new byte[lena.length + len / 8
+                + (len % 8 != 0 ? 1 : 0)];
         // (Above) length-array-length + sets-of-8-booleans +?
         // byte-for-remainder
         System.arraycopy(lena, 0, byts, 0, lena.length);
@@ -219,7 +219,7 @@ public class Primitives
     
     public static byte[] toByta(String data)
     {
-        return (data == null) ? null : data.getBytes();
+        return data == null ? null : data.getBytes();
     }
     
     public static byte[] toByta(String[] data)
@@ -240,7 +240,7 @@ public class Primitives
         final byte[] dLen = toByta(data.length); // byte array of data length
         totalLength += dLen.length;
         final int[] sLens = new int[data.length]; // String lengths = sLens
-        totalLength += (sLens.length * 4);
+        totalLength += sLens.length * 4;
         final byte[][] strs = new byte[data.length][]; // array of String bytes
         // ----- pack strs:
         for (int i = 0; i < data.length; i++)
@@ -280,7 +280,7 @@ public class Primitives
     
     public static byte toByte(byte[] data)
     {
-        return ((data == null) || (data.length == 0)) ? 0x0 : data[0];
+        return data == null || data.length == 0 ? 0x0 : data[0];
     }
     
     public static byte[] toByteA(byte[] data)
@@ -292,17 +292,17 @@ public class Primitives
     
     public static short toShort(byte[] data)
     {
-        if ((data == null) || (data.length != 2))
+        if (data == null || data.length != 2)
         {
             return 0x0;
         }
         // ----------
-        return (short) (((0xff & data[0]) << 8) | ((0xff & data[1]) << 0));
+        return (short) ((0xff & data[0]) << 8 | (0xff & data[1]) << 0);
     }
     
     public static short[] toShortA(byte[] data)
     {
-        if ((data == null) || ((data.length % 2) != 0))
+        if (data == null || data.length % 2 != 0)
         {
             return null;
         }
@@ -310,7 +310,7 @@ public class Primitives
         final short[] shts = new short[data.length / 2];
         for (int i = 0; i < shts.length; i++)
         {
-            shts[i] = toShort(new byte[] { data[(i * 2)], data[(i * 2) + 1] });
+            shts[i] = toShort(new byte[] { data[i * 2], data[i * 2 + 1] });
         }
         return shts;
     }
@@ -319,17 +319,17 @@ public class Primitives
     
     public static char toChar(byte[] data)
     {
-        if ((data == null) || (data.length != 2))
+        if (data == null || data.length != 2)
         {
             return 0x0;
         }
         // ----------
-        return (char) (((0xff & data[0]) << 8) | ((0xff & data[1]) << 0));
+        return (char) ((0xff & data[0]) << 8 | (0xff & data[1]) << 0);
     }
     
     public static char[] toCharA(byte[] data)
     {
-        if ((data == null) || ((data.length % 2) != 0))
+        if (data == null || data.length % 2 != 0)
         {
             return null;
         }
@@ -337,7 +337,7 @@ public class Primitives
         final char[] chrs = new char[data.length / 2];
         for (int i = 0; i < chrs.length; i++)
         {
-            chrs[i] = toChar(new byte[] { data[(i * 2)], data[(i * 2) + 1], });
+            chrs[i] = toChar(new byte[] { data[i * 2], data[i * 2 + 1], });
         }
         return chrs;
     }
@@ -346,19 +346,18 @@ public class Primitives
     
     public static int toInt(byte[] data)
     {
-        if ((data == null) || (data.length != 4))
+        if (data == null || data.length != 4)
         {
             return 0x0;
         }
         // ----------
-        return ( // NOTE: type cast not necessary for int
-        ((0xff & data[0]) << 24) | ((0xff & data[1]) << 16)
-                | ((0xff & data[2]) << 8) | ((0xff & data[3]) << 0));
+        return (0xff & data[0]) << 24 | (0xff & data[1]) << 16
+                | (0xff & data[2]) << 8 | (0xff & data[3]) << 0;
     }
     
     public static int[] toIntA(byte[] data)
     {
-        if ((data == null) || ((data.length % 4) != 0))
+        if (data == null || data.length % 4 != 0)
         {
             return null;
         }
@@ -366,8 +365,8 @@ public class Primitives
         final int[] ints = new int[data.length / 4];
         for (int i = 0; i < ints.length; i++)
         {
-            ints[i] = toInt(new byte[] { data[(i * 4)], data[(i * 4) + 1],
-                    data[(i * 4) + 2], data[(i * 4) + 3], });
+            ints[i] = toInt(new byte[] { data[i * 4], data[i * 4 + 1],
+                    data[i * 4 + 2], data[i * 4 + 3], });
         }
         return ints;
     }
@@ -387,25 +386,20 @@ public class Primitives
     
     public static long toLong(byte[] data)
     {
-        if ((data == null) || (data.length != 8))
+        if (data == null || data.length != 8)
         {
             return 0x0;
         }
         // ----------
-        return (
-        // (Below) convert to longs before shift because digits
-        // are lost with ints beyond the 32-bit limit
-        ((long) (0xff & data[0]) << 56) | ((long) (0xff & data[1]) << 48)
-                | ((long) (0xff & data[2]) << 40)
-                | ((long) (0xff & data[3]) << 32)
-                | ((long) (0xff & data[4]) << 24)
-                | ((long) (0xff & data[5]) << 16)
-                | ((long) (0xff & data[6]) << 8) | ((long) (0xff & data[7]) << 0));
+        return (long) (0xff & data[0]) << 56 | (long) (0xff & data[1]) << 48
+                | (long) (0xff & data[2]) << 40 | (long) (0xff & data[3]) << 32
+                | (long) (0xff & data[4]) << 24 | (long) (0xff & data[5]) << 16
+                | (long) (0xff & data[6]) << 8 | (long) (0xff & data[7]) << 0;
     }
     
     public static long[] toLongA(byte[] data)
     {
-        if ((data == null) || ((data.length % 8) != 0))
+        if (data == null || data.length % 8 != 0)
         {
             return null;
         }
@@ -413,9 +407,9 @@ public class Primitives
         final long[] lngs = new long[data.length / 8];
         for (int i = 0; i < lngs.length; i++)
         {
-            lngs[i] = toLong(new byte[] { data[(i * 8)], data[(i * 8) + 1],
-                    data[(i * 8) + 2], data[(i * 8) + 3], data[(i * 8) + 4],
-                    data[(i * 8) + 5], data[(i * 8) + 6], data[(i * 8) + 7], });
+            lngs[i] = toLong(new byte[] { data[i * 8], data[i * 8 + 1],
+                    data[i * 8 + 2], data[i * 8 + 3], data[i * 8 + 4],
+                    data[i * 8 + 5], data[i * 8 + 6], data[i * 8 + 7], });
         }
         return lngs;
     }
@@ -424,7 +418,7 @@ public class Primitives
     
     public static float toFloat(byte[] data)
     {
-        if ((data == null) || (data.length != 4))
+        if (data == null || data.length != 4)
         {
             return 0x0;
         }
@@ -434,7 +428,7 @@ public class Primitives
     
     public static float[] toFloatA(byte[] data)
     {
-        if ((data == null) || ((data.length % 4) != 0))
+        if (data == null || data.length % 4 != 0)
         {
             return null;
         }
@@ -442,8 +436,8 @@ public class Primitives
         final float[] flts = new float[data.length / 4];
         for (int i = 0; i < flts.length; i++)
         {
-            flts[i] = toFloat(new byte[] { data[(i * 4)], data[(i * 4) + 1],
-                    data[(i * 4) + 2], data[(i * 4) + 3], });
+            flts[i] = toFloat(new byte[] { data[i * 4], data[i * 4 + 1],
+                    data[i * 4 + 2], data[i * 4 + 3], });
         }
         return flts;
     }
@@ -452,7 +446,7 @@ public class Primitives
     
     public static double toDouble(byte[] data)
     {
-        if ((data == null) || (data.length != 8))
+        if (data == null || data.length != 8)
         {
             return 0x0;
         }
@@ -467,16 +461,16 @@ public class Primitives
             return null;
         }
         // ----------
-        if ((data.length % 8) != 0)
+        if (data.length % 8 != 0)
         {
             return null;
         }
         final double[] dbls = new double[data.length / 8];
         for (int i = 0; i < dbls.length; i++)
         {
-            dbls[i] = toDouble(new byte[] { data[(i * 8)], data[(i * 8) + 1],
-                    data[(i * 8) + 2], data[(i * 8) + 3], data[(i * 8) + 4],
-                    data[(i * 8) + 5], data[(i * 8) + 6], data[(i * 8) + 7], });
+            dbls[i] = toDouble(new byte[] { data[i * 8], data[i * 8 + 1],
+                    data[i * 8 + 2], data[i * 8 + 3], data[i * 8 + 4],
+                    data[i * 8 + 5], data[i * 8 + 6], data[i * 8 + 7], });
         }
         return dbls;
     }
@@ -485,7 +479,7 @@ public class Primitives
     
     public static boolean toBoolean(byte[] data)
     {
-        return ((data == null) || (data.length == 0)) ? false : data[0] != 0x00;
+        return data == null || data.length == 0 ? false : data[0] != 0x00;
     }
     
     public static boolean[] toBooleanA(byte[] data)
@@ -494,7 +488,7 @@ public class Primitives
         // from the first four bytes in the char array, and then
         // read the boolean array.
         // ----------
-        if ((data == null) || (data.length < 4))
+        if (data == null || data.length < 4)
         {
             return null;
         }
@@ -504,7 +498,7 @@ public class Primitives
         // ----- pack bools:
         for (int i = 0, j = 4, k = 7; i < bools.length; i++)
         {
-            bools[i] = ((data[j] >> k--) & 0x01) == 1;
+            bools[i] = (data[j] >> k-- & 0x01) == 1;
             if (k < 0)
             {
                 j++;
@@ -519,7 +513,7 @@ public class Primitives
     
     public static String toString(byte[] data)
     {
-        return (data == null) ? null : new String(data);
+        return data == null ? null : new String(data);
     }
     
     public static String[] toStringA(byte[] data)
@@ -529,7 +523,7 @@ public class Primitives
         // read the int array denoting the String lengths, and
         // then read the Strings.
         // ----------
-        if ((data == null) || (data.length < 4))
+        if (data == null || data.length < 4)
         {
             return null;
         }
@@ -538,7 +532,7 @@ public class Primitives
         // -----
         System.arraycopy(data, 0, bBuff, 0, 4);
         final int saLen = toInt(bBuff);
-        if (data.length < (4 + (saLen * 4)))
+        if (data.length < 4 + saLen * 4)
         {
             return null;
         }
@@ -552,11 +546,11 @@ public class Primitives
         }
         // ----------
         final String[] strs = new String[saLen];
-        for (int i = 0, dataPos = 4 + (saLen * 4); i < saLen; i++)
+        for (int i = 0, dataPos = 4 + saLen * 4; i < saLen; i++)
         {
             if (sLens[i] > 0)
             {
-                if (data.length >= (dataPos + sLens[i]))
+                if (data.length >= dataPos + sLens[i])
                 {
                     bBuff = new byte[sLens[i]];
                     System.arraycopy(data, dataPos, bBuff, 0, sLens[i]);

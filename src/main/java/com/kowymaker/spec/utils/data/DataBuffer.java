@@ -67,7 +67,7 @@ public abstract class DataBuffer
     
     public boolean hasReadableBytes()
     {
-        return (readPointer < readableBytes.length);
+        return readPointer < readableBytes.length;
     }
     
     public byte[] getWritedBytes()
@@ -167,7 +167,7 @@ public abstract class DataBuffer
     
     public String readString()
     {
-        int size = readInt();
+        final int size = readInt();
         return readString(size);
     }
     
@@ -299,7 +299,7 @@ public abstract class DataBuffer
     public int indexOf(byte[] bytes)
     {
         int idx = -1;
-        for (int i = 0; i < (readableBytes.length - 3); i++)
+        for (int i = 0; i < readableBytes.length - 3; i++)
         {
             if (readableBytes[i] == bytes[0])
             {

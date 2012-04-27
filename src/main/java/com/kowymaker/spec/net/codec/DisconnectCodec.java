@@ -21,27 +21,28 @@ import com.kowymaker.spec.utils.data.DataBuffer;
 
 /**
  * @author Koka El Kiwi
- *
+ * 
  */
 public class DisconnectCodec extends MessageCodec<DisconnectMessage>
 {
-
+    
     public DisconnectCodec()
     {
         super((byte) 0x02);
     }
-
+    
     @Override
     public DisconnectMessage decode(DataBuffer buf)
     {
-        DisconnectMessage msg = new DisconnectMessage();
+        final DisconnectMessage msg = new DisconnectMessage();
         
-        String name = buf.readString(buf.getReadableBytesSize() - buf.getReadPointer());
+        final String name = buf.readString(buf.getReadableBytesSize()
+                - buf.getReadPointer());
         msg.setName(name);
         
         return msg;
     }
-
+    
     @Override
     public void encode(DataBuffer buf, DisconnectMessage msg)
     {

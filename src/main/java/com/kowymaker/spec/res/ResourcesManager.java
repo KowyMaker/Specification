@@ -5,12 +5,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.kowymaker.spec.res.impl.*;
+import com.kowymaker.spec.res.impl.TileFormat;
 
 @SuppressWarnings("unused")
 public class ResourcesManager
 {
-    private final static Map<Class<? extends ResourceFormat<? extends ResourceFile>>, ResourceFormat<? extends ResourceFile>> formats  = new HashMap<Class<? extends ResourceFormat<? extends ResourceFile>>, ResourceFormat<? extends ResourceFile>>();
+    private final static Map<Class<? extends ResourceFormat<? extends ResourceFile>>, ResourceFormat<? extends ResourceFile>> formats = new HashMap<Class<? extends ResourceFormat<? extends ResourceFile>>, ResourceFormat<? extends ResourceFile>>();
     
     static
     {
@@ -18,7 +18,7 @@ public class ResourcesManager
         {
             register(TileFormat.class);
         }
-        catch (Exception e)
+        catch (final Exception e)
         {
             e.printStackTrace();
         }
@@ -30,7 +30,7 @@ public class ResourcesManager
             InstantiationException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException
     {
-        for (Class<? extends ResourceFormat<? extends ResourceFile>> clazz : classes)
+        for (final Class<? extends ResourceFormat<? extends ResourceFile>> clazz : classes)
         {
             register(clazz);
         }
@@ -41,8 +41,8 @@ public class ResourcesManager
             InstantiationException, IllegalAccessException,
             IllegalArgumentException, InvocationTargetException
     {
-        Constructor<T> constructor = clazz.getConstructor();
-        T format = constructor.newInstance();
+        final Constructor<T> constructor = clazz.getConstructor();
+        final T format = constructor.newInstance();
         formats.put(clazz, format);
     }
     

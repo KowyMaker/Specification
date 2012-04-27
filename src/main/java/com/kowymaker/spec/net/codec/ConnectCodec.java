@@ -21,11 +21,11 @@ import com.kowymaker.spec.utils.data.DataBuffer;
 
 /**
  * @author Koka El Kiwi
- *
+ * 
  */
 public class ConnectCodec extends MessageCodec<ConnectMessage>
 {
-
+    
     /**
      * @param opcode
      */
@@ -33,18 +33,19 @@ public class ConnectCodec extends MessageCodec<ConnectMessage>
     {
         super((byte) 0x01);
     }
-
+    
     @Override
     public ConnectMessage decode(DataBuffer buf)
     {
-        ConnectMessage msg = new ConnectMessage();
+        final ConnectMessage msg = new ConnectMessage();
         
-        String name = buf.readString(buf.getReadableBytesSize() - buf.getReadPointer());
+        final String name = buf.readString(buf.getReadableBytesSize()
+                - buf.getReadPointer());
         msg.setName(name);
         
         return msg;
     }
-
+    
     @Override
     public void encode(DataBuffer buf, ConnectMessage msg)
     {
