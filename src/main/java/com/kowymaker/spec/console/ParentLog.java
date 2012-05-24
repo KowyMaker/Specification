@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Kowy Maker.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Kowy Maker.  If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 package com.kowymaker.spec.console;
 
@@ -20,6 +20,12 @@ import java.io.PrintStream;
 
 import org.apache.commons.logging.impl.SimpleLog;
 
+/**
+ * Main logger which output to a specific OutputStream.
+ * 
+ * @author Koka El Kiwi
+ * 
+ */
 public class ParentLog extends SimpleLog
 {
     private static final long serialVersionUID = -7901568994222905177L;

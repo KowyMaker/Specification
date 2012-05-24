@@ -1,0 +1,99 @@
+#*
+
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+
+*#
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html xml:lang="en" lang="en">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=$outputEncoding" />
+		<title>$windowTitle Package $pkgInfo.name</title>
+		<link rel="stylesheet" type="text/css" href="${pkgInfo.rootRef}stylesheet.css" title="style" />
+	</head>
+	<body>
+		## Navigation Bar -------- START --------
+      	<div class="topNav">
+        	<ul class="navList" title="Navigation">
+          		<li>
+            		<a href="${pkgInfo.rootRef}overview-summary.html">Overview</a>
+          		</li>
+          		<li class="navBarCell1Rev">Package</li>
+        	</ul>
+      	</div>
+      	<div class="subNav">
+        	<ul class="navList">
+          		<li>
+            		<a href="${pkgInfo.rootRef}index.html" target="_top">FRAMES</a>
+          		</li>
+          		<li>
+            		<a href="package-summary.html" target="_top">NO FRAMES</a>
+          		</li>
+        	</ul>
+      	</div>
+		## Navigation Bar -------- END --------
+
+		## Package Summary -------- START --------
+		<div class="header">
+		  <h1 title="Package" class="title">Package $pkgInfo.name</h1>
+		</div>
+
+        <div class="contentContainer">
+    		<table class="packageSummary" border="0" cellpadding="3" cellspacing="0" summary="Class Summary table, listing classes, and an explanation">
+    		<caption><span>Class Summary</span><span class="tabEnd">&nbsp;</span></caption>
+            	<thead>
+              		<tr>
+                		<th class="colFirst" scope="col">Class Summary</th>
+              		</tr>
+            	</thead>
+            	<tbody>
+            		#foreach ($classInfo in $pkgInfo.classes.values())
+                	<tr>
+                  		<td class="colFirst">
+                    		<a href="${classInfo.filename}.html" target="classFrame">$classInfo.name</a>
+                  		</td>
+                	</tr>
+    				#end
+            	</tbody>
+          	</table>
+        </div>
+		## Package Summary -------- END --------
+
+		## Navigation Bar -------- START --------
+      	<div class="bottomNav">
+            <ul class="navList" title="Navigation">
+                <li>
+                    <a href="${pkgInfo.rootRef}overview-summary.html">Overview</a>
+                </li>
+                <li class="navBarCell1Rev">Package</li>
+            </ul>
+        </div>
+        <div class="subNav">
+            <ul class="navList">
+                <li>
+                    <a href="${pkgInfo.rootRef}index.html" target="_top">FRAMES</a>
+                </li>
+                <li>
+                    <a href="package-summary.html" target="_top">NO FRAMES</a>
+                </li>
+            </ul>
+        </div>
+		## Navigation Bar -------- END --------
+		<hr />
+		${bottom}
+	</body>
+</html>

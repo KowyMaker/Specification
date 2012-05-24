@@ -12,7 +12,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Kowy Maker.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Kowy Maker.  If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 package com.kowymaker.spec.res;
 
@@ -23,7 +23,6 @@ import java.util.Map;
 
 import com.kowymaker.spec.res.impl.TileFormat;
 
-@SuppressWarnings("unused")
 public class ResourcesManager
 {
     private final static Map<Class<? extends ResourceFormat<? extends ResourceFile>>, ResourceFormat<? extends ResourceFile>> formats = new HashMap<Class<? extends ResourceFormat<? extends ResourceFile>>, ResourceFormat<? extends ResourceFile>>();

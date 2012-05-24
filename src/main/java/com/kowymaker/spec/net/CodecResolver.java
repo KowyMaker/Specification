@@ -12,21 +12,27 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Kowy Maker.  If not, see <http://www.gnu.org/licenses/>.
+ * along with Kowy Maker.  If not, see <http://www.gnu.org/licenses/gpl-3.0.txt>.
  */
 package com.kowymaker.spec.net;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.kowymaker.spec.net.codec.ConnectCodec;
 import com.kowymaker.spec.net.codec.DisconnectCodec;
 import com.kowymaker.spec.net.codec.MessageCodec;
+import com.kowymaker.spec.net.msg.ConnectMessage;
+import com.kowymaker.spec.net.msg.DisconnectMessage;
 import com.kowymaker.spec.net.msg.Message;
 
 /**
+ * Kowy Maker Project Codec Manager.<br />
+ * 
+ * Contains all specifications used to transmit packets between Client and
+ * Server.
+ * 
  * @author Koka El Kiwi
  * 
  */
@@ -40,7 +46,9 @@ public class CodecResolver
     {
         try
         {
-            registerCodec(ConnectCodec.class, DisconnectCodec.class);
+            // Register basic codecs.
+            registerCodec(ConnectMessage.class, ConnectCodec.class);
+            registerCodec(DisconnectMessage.class, DisconnectCodec.class);
         }
         catch (final Exception e)
         {
@@ -48,83 +56,86 @@ public class CodecResolver
         }
     }
     
-    public void registerCodec(
-            Class<? extends MessageCodec<? extends Message>>... classes)
-            throws Exception
-    {
-        for (final Class<? extends MessageCodec<? extends Message>> clazz : classes)
-        {
-            registerCodec(clazz);
-        }
-    }
-    
-    public void registerCodec(
-            Class<? extends MessageCodec<? extends Message>> clazz)
-            throws Exception
+    /**
+     * Register codec with his {@link MessageCodec} class.
+     * 
+     * @param msgClazz
+     *            Message class to bind to.
+     * @param clazz
+     *            Message codec class.
+     * @throws Exception
+     *             if classes doesn't exists.
+     */
+    public <V extends Message, T extends MessageCodec<V>> void registerCodec(
+            Class<V> msgClazz, Class<T> clazz) throws Exception
     {
         // Codec
-        final Constructor<? extends MessageCodec<? extends Message>> constructor = clazz
-                .getConstructor();
-        final MessageCodec<? extends Message> codec = constructor.newInstance();
+        final Constructor<T> constructor = clazz.getConstructor();
+        final T codec = constructor.newInstance();
+        registerCodec(msgClazz, codec);
+    }
+    
+    /**
+     * Register codec.
+     * 
+     * @param msgClazz
+     *            Message class to bind to.
+     * @param codec
+     *            Message codec
+     */
+    public <V extends Message, T extends MessageCodec<V>> void registerCodec(
+            Class<V> msgClazz, T codec)
+    {
         codecs.put(codec.getOpcode(), codec);
-        final Class<? extends Message> msgClazz = (Class<? extends Message>) ((ParameterizedType) clazz
-                .getGenericSuperclass()).getActualTypeArguments()[0];
         opcodes.put(msgClazz, codec.getOpcode());
     }
     
-    public void registerHandler(
-            Class<? extends MessageHandler<? extends Message>>... classes)
-            throws Exception
+    /**
+     * Register handler.
+     * 
+     * @param msgClazz
+     *            Message class to bind to.
+     * @param handler
+     *            Message handler
+     */
+    public <V extends Message, T extends MessageHandler<V>> void registerHandler(
+            Class<V> msgClazz, T handler)
     {
-        for (final Class<? extends MessageHandler<? extends Message>> clazz : classes)
-        {
-            registerHandler(clazz);
-        }
-    }
-    
-    public void registerHandler(
-            Class<? extends MessageHandler<? extends Message>> clazz)
-            throws Exception
-    {
-        registerHandler(clazz, null);
-    }
-    
-    public void registerHandler(Map<String, Object> properties,
-            Class<? extends MessageHandler<? extends Message>>... classes)
-            throws Exception
-    {
-        for (final Class<? extends MessageHandler<? extends Message>> clazz : classes)
-        {
-            registerHandler(clazz, properties);
-        }
-    }
-    
-    public void registerHandler(
-            Class<? extends MessageHandler<? extends Message>> clazz,
-            Map<String, Object> properties) throws Exception
-    {
-        final Constructor<? extends MessageHandler<? extends Message>> constructor = clazz
-                .getConstructor();
-        final MessageHandler<? extends Message> handler = constructor
-                .newInstance();
-        handler.addProperties(properties);
-        handler.init();
-        final Class<? extends Message> msgClazz = (Class<? extends Message>) ((ParameterizedType) clazz
-                .getGenericSuperclass()).getActualTypeArguments()[0];
         handlers.put(msgClazz, handler);
     }
     
+    /**
+     * Get the codec bound to a specific opcode.
+     * 
+     * @param opcode
+     *            Message opcode.
+     * @return Codec bound to this opcode.
+     */
     public <V extends Message, T extends MessageCodec<V>> T getCodec(byte opcode)
     {
         return (T) codecs.get(opcode);
     }
     
+    /**
+     * Get the codec bound to a specific message class.
+     * 
+     * @param clazz
+     *            Message class.
+     * @return Codec bound to this message class.
+     */
     public <V extends Message, T extends MessageCodec<V>> T getCodec(
             Class<V> clazz)
     {
         return (T) codecs.get(opcodes.get(clazz));
     }
     
+    /**
+     * Get the handler bound to a specific message handler.
+     * 
+     * @param clazz
+     *            Message class.
+     * @return Handler bound to this message class.
+     */
     public <V extends Message, T extends MessageHandler<V>> T getHandler(
             Class<V> clazz)
     {
