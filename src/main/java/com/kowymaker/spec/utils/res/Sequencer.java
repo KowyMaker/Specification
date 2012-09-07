@@ -16,7 +16,6 @@
  */
 package com.kowymaker.spec.utils.res;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -54,7 +53,7 @@ public class Sequencer implements Encodable
     
     public void encode(DataBuffer buf)
     {
-        buf.writeInteger(sequences.size());
+        buf.writeInt(sequences.size());
         for (final Sequence sequence : sequences.values())
         {
             sequence.encode(buf);
@@ -76,7 +75,7 @@ public class Sequencer implements Encodable
     public static class Sequence implements Encodable
     {
         private String            name;
-        private int               fps;
+        private double            fps    = 15;
         private final List<Frame> frames = new ArrayList<Frame>();
         
         public Sequence(String name)
@@ -94,12 +93,12 @@ public class Sequencer implements Encodable
             this.name = name;
         }
         
-        public int getFps()
+        public double getFps()
         {
             return fps;
         }
         
-        public void setFps(int fps)
+        public void setFps(double fps)
         {
             this.fps = fps;
         }
@@ -148,8 +147,8 @@ public class Sequencer implements Encodable
         public void encode(DataBuffer buf)
         {
             buf.writeString(name);
-            buf.writeInteger(fps);
-            buf.writeInteger(frames.size());
+            buf.writeDouble(fps);
+            buf.writeInt(frames.size());
             for (final Frame frame : frames)
             {
                 frame.encode(buf);
@@ -159,7 +158,7 @@ public class Sequencer implements Encodable
         public void decode(DataBuffer buf)
         {
             name = buf.readString();
-            fps = buf.readInt();
+            fps = buf.readDouble();
             final int length = buf.readInt();
             for (int i = 0; i < length; i++)
             {
@@ -224,9 +223,7 @@ public class Sequencer implements Encodable
             
             if (diff > 0)
             {
-                index = (int) (new BigDecimal(diff)
-                        .divide(new BigDecimal(1000))
-                        .multiply(new BigDecimal(sequence.fps)).floatValue() % sequence
+                index = (int) ((diff * sequence.getFps() / 1000) % sequence
                         .getLength());
             }
             
@@ -282,9 +279,9 @@ public class Sequencer implements Encodable
         
         public void encode(DataBuffer buf)
         {
-            buf.writeInteger(width);
-            buf.writeInteger(height);
-            buf.writeInteger(data.length);
+            buf.writeInt(width);
+            buf.writeInt(height);
+            buf.writeInt(data.length);
             buf.writeBytes(data);
         }
         
@@ -292,8 +289,11 @@ public class Sequencer implements Encodable
         {
             width = buf.readInt();
             height = buf.readInt();
-            final int size = buf.readInt();
-            data = buf.readBytes(size);
+            
+            final int length = buf.readInt();
+            data = new byte[length];
+            
+            buf.readBytes(data);
         }
     }
 }

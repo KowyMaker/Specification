@@ -26,9 +26,9 @@ import java.util.Arrays;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.jboss.netty.buffer.ChannelBufferInputStream;
 
 import com.kowymaker.spec.utils.data.DataBuffer;
-import com.kowymaker.spec.utils.data.DynamicDataBuffer;
 
 public abstract class ResourceFormat<T extends ResourceFile>
 {
@@ -80,11 +80,12 @@ public abstract class ResourceFormat<T extends ResourceFile>
     
     public T load(byte[] data) throws Exception
     {
-        final DataBuffer buf = new DynamicDataBuffer();
-        buf.setReadableBytes(data);
+        // final DataBuffer buf = new DynamicDataBuffer();
+        final DataBuffer buf = new DataBuffer(data);
         
         // Test signature
-        final byte[] testSignature = buf.readBytes(5);
+        final byte[] testSignature = new byte[5];
+        buf.readBytes(testSignature);
         if (!Arrays.equals(testSignature, signature))
         {
             throw new RuntimeException("Signature mismatch!");
@@ -115,11 +116,11 @@ public abstract class ResourceFormat<T extends ResourceFile>
     
     public void save(T res, OutputStream out) throws IOException
     {
-        final DataBuffer buf = new DynamicDataBuffer();
+        final DataBuffer buf = new DataBuffer();
         
         save(res, buf);
         
-        IOUtils.write(buf.getWritedBytes(), out);
+        IOUtils.copy(new ChannelBufferInputStream(buf), out);
     }
     
     public void save(T res, DataBuffer buf)

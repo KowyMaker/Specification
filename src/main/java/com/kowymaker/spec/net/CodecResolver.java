@@ -16,16 +16,12 @@
  */
 package com.kowymaker.spec.net;
 
-import java.lang.reflect.Constructor;
-import java.util.HashMap;
 import java.util.Map;
 
-import com.kowymaker.spec.net.codec.ConnectCodec;
-import com.kowymaker.spec.net.codec.DisconnectCodec;
-import com.kowymaker.spec.net.codec.MessageCodec;
-import com.kowymaker.spec.net.msg.ConnectMessage;
-import com.kowymaker.spec.net.msg.DisconnectMessage;
-import com.kowymaker.spec.net.msg.Message;
+import com.google.common.collect.Maps;
+import com.google.protobuf.Message;
+import com.google.protobuf.MessageOrBuilder;
+import com.kowymaker.spec.proto.NetworkCodecs;
 
 /**
  * Kowy Maker Project Codec Manager.<br />
@@ -36,109 +32,63 @@ import com.kowymaker.spec.net.msg.Message;
  * @author Koka El Kiwi
  * 
  */
-@SuppressWarnings("unchecked")
 public class CodecResolver
 {
-    private final Map<Byte, MessageCodec<? extends Message>>                       codecs   = new HashMap<Byte, MessageCodec<? extends Message>>();
-    private final Map<Class<? extends Message>, MessageHandler<? extends Message>> handlers = new HashMap<Class<? extends Message>, MessageHandler<? extends Message>>();
-    private final Map<Class<? extends Message>, Byte>                              opcodes  = new HashMap<Class<? extends Message>, Byte>();
+    private final Map<Integer, Message.Builder>   codecs   = Maps.newLinkedHashMap();
+    private final Map<Integer, MessageHandler<?>> handlers = Maps.newLinkedHashMap();
     
+    public CodecResolver()
     {
-        try
+        registerCodec(0, NetworkCodecs.ConnectMessage.newBuilder());
+    }
+    
+    public void registerCodec(int opcode, Message.Builder codec)
+    {
+        codecs.put(opcode, codec);
+    }
+    
+    public Message.Builder getCodec(int opcode)
+    {
+        return codecs.get(opcode);
+    }
+    
+    public void registerHandler(int opcode, MessageHandler<?> handler)
+    {
+        handlers.put(opcode, handler);
+    }
+    
+    public void registerHandler(Class<? extends MessageOrBuilder> messageClass,
+            MessageHandler<?> handler)
+    {
+        registerHandler(getOpcode(messageClass), handler);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <T> MessageHandler<T> getHandler(int opcode)
+    {
+        return (MessageHandler<T>) handlers.get(opcode);
+    }
+    
+    public <T> MessageHandler<T> getHandler(
+            Class<? extends MessageOrBuilder> clazz)
+    {
+        return getHandler(getOpcode(clazz));
+    }
+    
+    public int getOpcode(Class<? extends MessageOrBuilder> clazz)
+    {
+        Class<?> testClass = clazz.getInterfaces()[0];
+        
+        for (int opcode : codecs.keySet())
         {
-            // Register basic codecs.
-            registerCodec(ConnectMessage.class, ConnectCodec.class);
-            registerCodec(DisconnectMessage.class, DisconnectCodec.class);
+            Message.Builder codec = codecs.get(opcode);
+            
+            if (testClass.isInstance(codec))
+            {
+                return opcode;
+            }
         }
-        catch (final Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-    
-    /**
-     * Register codec with his {@link MessageCodec} class.
-     * 
-     * @param msgClazz
-     *            Message class to bind to.
-     * @param clazz
-     *            Message codec class.
-     * @throws Exception
-     *             if classes doesn't exists.
-     */
-    public <V extends Message, T extends MessageCodec<V>> void registerCodec(
-            Class<V> msgClazz, Class<T> clazz) throws Exception
-    {
-        // Codec
-        final Constructor<T> constructor = clazz.getConstructor();
-        final T codec = constructor.newInstance();
-        registerCodec(msgClazz, codec);
-    }
-    
-    /**
-     * Register codec.
-     * 
-     * @param msgClazz
-     *            Message class to bind to.
-     * @param codec
-     *            Message codec
-     */
-    public <V extends Message, T extends MessageCodec<V>> void registerCodec(
-            Class<V> msgClazz, T codec)
-    {
-        codecs.put(codec.getOpcode(), codec);
-        opcodes.put(msgClazz, codec.getOpcode());
-    }
-    
-    /**
-     * Register handler.
-     * 
-     * @param msgClazz
-     *            Message class to bind to.
-     * @param handler
-     *            Message handler
-     */
-    public <V extends Message, T extends MessageHandler<V>> void registerHandler(
-            Class<V> msgClazz, T handler)
-    {
-        handlers.put(msgClazz, handler);
-    }
-    
-    /**
-     * Get the codec bound to a specific opcode.
-     * 
-     * @param opcode
-     *            Message opcode.
-     * @return Codec bound to this opcode.
-     */
-    public <V extends Message, T extends MessageCodec<V>> T getCodec(byte opcode)
-    {
-        return (T) codecs.get(opcode);
-    }
-    
-    /**
-     * Get the codec bound to a specific message class.
-     * 
-     * @param clazz
-     *            Message class.
-     * @return Codec bound to this message class.
-     */
-    public <V extends Message, T extends MessageCodec<V>> T getCodec(
-            Class<V> clazz)
-    {
-        return (T) codecs.get(opcodes.get(clazz));
-    }
-    
-    /**
-     * Get the handler bound to a specific message handler.
-     * 
-     * @param clazz
-     *            Message class.
-     * @return Handler bound to this message class.
-     */
-    public <V extends Message, T extends MessageHandler<V>> T getHandler(
-            Class<V> clazz)
-    {
-        return (T) handlers.get(clazz);
+        
+        return -1;
     }
 }

@@ -19,8 +19,6 @@ package com.kowymaker.spec.net;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.MessageEvent;
 
-import com.kowymaker.spec.net.msg.Message;
-
 /**
  * Class used by client/server (or others) to handle packets easily.
  * 
@@ -29,7 +27,7 @@ import com.kowymaker.spec.net.msg.Message;
  * @param <T>
  *            Message type to bind to.
  */
-public abstract class MessageHandler<T extends Message>
+public abstract class MessageHandler<T>
 {
     @SuppressWarnings("unchecked")
     public boolean handle(ChannelHandlerContext ctx, MessageEvent e)

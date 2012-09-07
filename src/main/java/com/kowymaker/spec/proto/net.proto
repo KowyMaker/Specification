@@ -1,0 +1,13 @@
+package com.kowymaker.spec.proto;
+
+option java_outer_classname = "NetworkCodecs";
+
+message ConnectMessage
+{
+    required string name = 1;
+}
+
+message DisconnectMessage
+{
+    required string name = 1;
+}

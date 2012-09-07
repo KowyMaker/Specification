@@ -63,8 +63,8 @@ public class Dimension implements Encodable
     
     public void encode(DataBuffer buf)
     {
-        buf.writeInteger(width);
-        buf.writeInteger(height);
+        buf.writeInt(width);
+        buf.writeInt(height);
     }
     
     public void decode(DataBuffer buf)
